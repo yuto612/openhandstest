@@ -29,3 +29,4 @@ python3 todo.py remove "Task name"
 python3 app.py
 ```
 Then visit http://localhost:8011/
+- Includes tagging, searching, filtering, and sorting functionality.

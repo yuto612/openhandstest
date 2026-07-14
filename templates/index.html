@@ -1,22 +1,65 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" x-data="{ darkMode: false }" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Memo App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
 </head>
-<body>
-    <h1>メモアプリ</h1>
-    <form action="/add" method="post">
-        <input type="text" name="content" required>
-        <button type="submit">追加</button>
-    </form>
-    <ul>
-        {% for note in notes %}
-            <li>
-                {{ note[1] }}
-                <a href="/delete/{{ note[0] }}">削除</a>
-            </li>
-        {% endfor %}
-    </ul>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <div class="max-w-3xl mx-auto px-6 py-12">
+        <header class="flex justify-between items-center mb-10">
+            <h1 class="text-4xl font-extrabold tracking-tight">メモアプリ</h1>
+            <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                <span x-show="!darkMode">🌙</span>
+                <span x-show="darkMode">☀️</span>
+            </button>
+        </header>
+
+        <form action="/add" method="post" class="mb-10 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 grid gap-4">
+            <input type="text" name="content" required placeholder="新しいメモを入力..." class="bg-gray-100 dark:bg-gray-900 border-transparent focus:border-blue-500 rounded-xl px-4 py-3 outline-none transition">
+            <input type="text" name="tags" placeholder="タグ (カンマ区切り)..." class="bg-gray-100 dark:bg-gray-900 border-transparent focus:border-blue-500 rounded-xl px-4 py-3 outline-none transition">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition">追加</button>
+        </form>
+
+        <div class="mb-8 flex flex-wrap gap-4 items-center">
+            <form action="/" method="get" class="flex gap-2">
+                <input type="text" name="search" value="{{ search }}" placeholder="検索..." class="bg-white dark:bg-gray-800 border rounded-lg px-3 py-2 outline-none">
+                <button type="submit" class="bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-lg">検索</button>
+            </form>
+            <div class="flex gap-2">
+                {% for tag in all_tags %}
+                    <a href="/?tag={{ tag }}" class="px-3 py-1 rounded-full text-sm {{ 'bg-blue-500 text-white' if tag == tag_filter else 'bg-gray-200 dark:bg-gray-700' }}">{{ tag }}</a>
+                {% endfor %}
+                <a href="/" class="px-3 py-1 rounded-full text-sm bg-gray-200 dark:bg-gray-700">全解除</a>
+            </div>
+            <a href="/?sort={{ 'asc' if sort == 'desc' else 'desc' }}{{ '&search=' + search if search }}{{ '&tag=' + tag_filter if tag_filter }}" class="bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-lg text-sm">
+                並び替え: {{ '新しい順' if sort == 'desc' else '古い順' }}
+            </a>
+        </div>
+
+        <div class="grid gap-6">
+            {% for note in notes %}
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div class="flex justify-between items-start mb-4">
+                        <p class="text-lg">{{ note.content }}</p>
+                        <a href="/delete/{{ note.id }}" class="text-red-500 hover:text-red-600 font-medium">削除</a>
+                    </div>
+                    <div class="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+                        <div class="flex gap-2">
+                            {% for tag in note.tags %}
+                                <span class="px-2 py-0.5 rounded {{ tag[1] }}">{{ tag[0] }}</span>
+                            {% endfor %}
+                        </div>
+                        <time>{{ note.created_at }}</time>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 </body>
 </html>
