@@ -24,6 +24,12 @@ python3 todo.py list
 python3 todo.py remove "Task name"
 ```
 
+### Testing
+To run the tests for the TODO CLI tool:
+```bash
+pytest test_todo.py
+```
+
 ### Flask Memo App
 ```bash
 python3 app.py
