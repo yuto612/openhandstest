@@ -1,11 +1,12 @@
 # openhandstest
 
-This repository contains:
-1. A simple FizzBuzz implementation in Python.
-2. A simple TODO CLI tool in Python.
-3. A simple Flask memo web app.
+このリポジトリには以下のプロジェクトが含まれています。
 
-## How to run
+1. Pythonでの簡単なFizzBuzzの実装。
+2. Pythonでの簡単なTODO CLIツール。
+3. 簡単なFlaskメモWebアプリ。
+
+## 実行方法
 
 ### FizzBuzz
 ```bash
@@ -14,25 +15,25 @@ python3 fizzbuzz.py
 
 ### TODO CLI
 ```bash
-# Add a task
-python3 todo.py add "Task name"
+# タスクの追加
+python3 todo.py add "タスク名"
 
-# List tasks
+# タスクの一覧表示
 python3 todo.py list
 
-# Remove a task
-python3 todo.py remove "Task name"
+# タスクの削除
+python3 todo.py remove "タスク名"
 ```
 
-### Testing
-To run the tests for the TODO CLI tool:
+### テスト
+TODO CLIツールのテストを実行するには:
 ```bash
 pytest test_todo.py
 ```
 
-### Flask Memo App
+### Flask メモアプリ
 ```bash
 python3 app.py
 ```
-Then visit http://localhost:8011/
-- Includes tagging, searching, filtering, and sorting functionality.
+その後、 http://localhost:8011/ にアクセスしてください。
+- タグ付け、検索、フィルタリング、並べ替え機能が含まれています。
